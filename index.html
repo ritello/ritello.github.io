@@ -1,7 +1,260 @@
 <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ritello — separator vacuum cleaner for dry and wet cleaning</title>
+<style>
+  *, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: #0e0b13;
+    color: #faf8f5;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  /* ── Your actual website content ── */
+  .website-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 1rem;
+    height: 100vh;
+    width: 100vw;
+    background: #faf8f0;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+    text-align: center;
+    padding: 2rem;
+  }
+  .website-content.visible { opacity: 1; }
+  .website-content h1 {
+    font-size: 2.5rem;
+    color: #1a1510;
+    font-weight: 800;
+  }
+  .website-content p {
+    font-size: 1.1rem;
+    color: #6b6560;
+    max-width: 420px;
+    line-height: 1.6;
+  }
+
+  /* ── Overlay ── */
+  .overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(ellipse at center, #1a1020 0%, #0e0b13 100%);
+    transition: opacity 0.6s ease, visibility 0.6s ease;
+  }
+  .overlay.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  /* ── Floating celebrate button ── */
+  .celebrate-btn {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1.15rem 2.6rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #faf8f5;
+    background: #c0392b;
+    border: none;
+    border-radius: 60px;
+    cursor: pointer;
+    box-shadow: 0 0 40px rgba(192, 57, 43, 0.4), 0 8px 30px rgba(0, 0, 0, 0.3);
+    animation: float 3s ease-in-out infinite, glow 2s ease-in-out infinite alternate;
+    transition: transform 0.2s ease;
+    letter-spacing: 0.3px;
+  }
+  .celebrate-btn:hover { transform: scale(1.07); }
+  .celebrate-btn:active { transform: scale(0.95); }
+  .celebrate-btn.gone { display: none; }
+
+  .celebrate-btn .gift-icon {
+    width: 24px;
+    height: 24px;
+    transition: transform 0.3s ease;
+  }
+  .celebrate-btn:hover .gift-icon {
+    transform: rotate(12deg);
+  }
+
+  /* Ping dot */
+  .ping-dot {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    width: 14px;
+    height: 14px;
+  }
+  .ping-dot .ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: #d4a437;
+    animation: ping 1.2s cubic-bezier(0, 0, 0.2, 1) infinite;
+    opacity: 0.75;
+  }
+  .ping-dot .dot {
+    position: relative;
+    display: block;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #d4a437;
+  }
+
+  .tease-text {
+    position: absolute;
+    bottom: calc(100% + 2rem);
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.05rem;
+    color: rgba(250, 248, 245, 0.8);
+    letter-spacing: 0.6px;
+    white-space: nowrap;
+    animation: fadeInUp 0.6s ease both;
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateX(-50%) translateY(12px); }
+    to { opacity: 1; transform: translateX(-50%) translateY(0); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
+  @keyframes glow {
+    0% { box-shadow: 0 0 30px rgba(192,57,43,0.35), 0 8px 30px rgba(0,0,0,0.3); }
+    100% { box-shadow: 0 0 55px rgba(192,57,43,0.6), 0 8px 40px rgba(0,0,0,0.4); }
+  }
+
+  /* ── Message card ── */
+  .message-card {
+    position: absolute;
+    z-index: 10;
+    text-align: center;
+    max-width: 500px;
+    width: 88%;
+    padding: 2.8rem 2.2rem;
+    background: rgba(255,255,255,0.06);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 24px;
+    opacity: 0;
+    transform: scale(0.85) translateY(30px);
+    transition: opacity 0.65s ease, transform 0.65s ease;
+    pointer-events: none;
+  }
+  .message-card.visible {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    pointer-events: all;
+  }
+
+  .message-card .cake-icon {
+    display: block;
+    margin: 0 auto 0.8rem;
+  }
+
+  .message-card h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    line-height: 1.15;
+    color: #faf8f5;
+    margin-bottom: 0.2rem;
+  }
+  @media (min-width: 640px) {
+    .message-card h1 { font-size: 3.5rem; }
+  }
+  .message-card h1 .dad {
+    display: block;
+    color: #d4a437;
+  }
+
+  /* Divider */
+  .divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin: 1rem 0;
+  }
+  .divider .line {
+    width: 48px;
+    height: 1px;
+    background: rgba(212, 164, 55, 0.45);
+  }
+  .divider svg { flex-shrink: 0; }
+
+  .message-card .personal-msg {
+    font-size: 1.15rem;
+    color: rgba(250,248,245,0.75);
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    max-width: 380px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .dismiss-btn {
+    padding: 0.85rem 2.4rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #faf8f5;
+    background: rgba(250, 248, 245, 0.1);
+    border: 1px solid rgba(250,248,245,0.18);
+    border-radius: 50px;
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.2s ease;
+    backdrop-filter: blur(8px);
+  }
+  .dismiss-btn:hover {
+    transform: scale(1.05);
+    background: rgba(250, 248, 245, 0.18);
+  }
+  .dismiss-btn:active { transform: scale(0.95); }
+
+  /* ── Canvas ── */
+  canvas#confetti {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    pointer-events: none;
+  }
+
+  @keyframes ping {
+    75%, 100% { transform: scale(2); opacity: 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Your actual website content (replace this section) -->
+<!DOCTYPE html>
 <!-- saved from url - anchors removed -->
 <html data-wf-page="63dd45dd952feffd20291227" data-wf-site="62e10c3116206d1b71778812"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style>.wf-force-outline-none[tabindex="-1"]:focus{outline:none;}</style>
-		<link rel="icon" type="image/x-icon" href="favicon.png">
+		
 		<meta content="width=device-width, initial-scale=1" name="viewport">
 		<style>@media (min-width:992px) {html.w-mod-js:not(.w-mod-ix) [data-w-id="583e827f-1480-f4dc-4782-a178242f5109"] {-webkit-transform:translate3d(0, -80px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, -80px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, -80px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, -80px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);opacity:0;}html.w-mod-js:not(.w-mod-ix) [data-w-id="46aad32f-c5e1-5781-9ce9-0275335b7799"] {-webkit-transform:translate3d(0, -80px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, -80px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, -80px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, -80px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);opacity:0;}html.w-mod-js:not(.w-mod-ix) [data-w-id="c43bae2b-da9a-546e-2cc7-2d159ee8f220"] {-webkit-transform:translate3d(0, -80px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, -80px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, -80px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, -80px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);opacity:0;}html.w-mod-js:not(.w-mod-ix) [data-w-id="10d74693-a044-8b63-cf54-507e82ed57db"] {-webkit-transform:translate3d(0, -80px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, -80px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, -80px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, -80px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);opacity:0;}html.w-mod-js:not(.w-mod-ix) [data-w-id="2af492a4-c3cd-2327-80c4-a545da96a101"] {-webkit-transform:translate3d(0, -80px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, -80px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, -80px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, -80px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);opacity:0;}html.w-mod-js:not(.w-mod-ix) [data-w-id="46aad32f-c5e1-5781-9ce9-0275335b7797"] {opacity:0;}html.w-mod-js:not(.w-mod-ix) [data-w-id="c43bae2b-da9a-546e-2cc7-2d159ee8f21e"] {opacity:0;}html.w-mod-js:not(.w-mod-ix) [data-w-id="10d74693-a044-8b63-cf54-507e82ed57d9"] {opacity:0;}html.w-mod-js:not(.w-mod-ix) [data-w-id="555b6e25-9965-a7e3-493f-ebd70183621c"] {width:0%;}html.w-mod-js:not(.w-mod-ix) [data-w-id="2af492a4-c3cd-2327-80c4-a545da96a0ff"] {opacity:0;}html.w-mod-js:not(.w-mod-ix) [data-w-id="ddcddcb0-67f5-321d-5803-ffbd75897df5"] {opacity:0;-webkit-transform:translate3d(0, 0, 0) scale3d(0, 0, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, 0, 0) scale3d(0, 0, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, 0, 0) scale3d(0, 0, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, 0, 0) scale3d(0, 0, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);}html.w-mod-js:not(.w-mod-ix) [data-w-id="49a0839a-5a3d-a5c9-d5c7-4e2ac54510ce"] {opacity:0;-webkit-transform:translate3d(0, 0, 0) scale3d(1.5, 1.5, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, 0, 0) scale3d(1.5, 1.5, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, 0, 0) scale3d(1.5, 1.5, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, 0, 0) scale3d(1.5, 1.5, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);}html.w-mod-js:not(.w-mod-ix) [data-w-id="36a3c7e1-a0d1-bfdc-a279-618f2b7eea63"] {height:0px;}html.w-mod-js:not(.w-mod-ix) [data-w-id="9bba045a-ea93-2f6c-24c9-7b5788090018"] {opacity:0;-webkit-transform:translate3d(0, -80px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, -80px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, -80px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, -80px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);}html.w-mod-js:not(.w-mod-ix) [data-w-id="54dcf587-deb5-70eb-e253-510745abf4a4"] {height:0%;}html.w-mod-js:not(.w-mod-ix) [data-w-id="fb0f224c-e1db-fb65-3027-93f4337208b1"] {opacity:0;-webkit-transform:translate3d(0, -80px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, -80px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, -80px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, -80px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);}html.w-mod-js:not(.w-mod-ix) [data-w-id="71644ca0-65ec-87da-0869-70b3eb636b8a"] {opacity:0;-webkit-transform:translate3d(0, 0, 0) scale3d(1.5, 1.5, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, 0, 0) scale3d(1.5, 1.5, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, 0, 0) scale3d(1.5, 1.5, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, 0, 0) scale3d(1.5, 1.5, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);}html.w-mod-js:not(.w-mod-ix) [data-w-id="dd896979-b0ea-02e5-7ec3-a42801bb1107"] {height:0%;}}</style>
 		<link href="https://fonts.googleapis.com/" rel="preconnect">
@@ -1136,3 +1389,256 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 </body></html>
+
+<!-- Birthday overlay -->
+<div class="overlay" id="overlay">
+  <button class="celebrate-btn" id="celebrateBtn" aria-label="Click to open your birthday surprise">
+    <span class="tease-text">You have a surprise waiting...</span>
+    <svg class="gift-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="8" width="18" height="4" rx="1" />
+      <path d="M12 8v13" />
+      <path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7" />
+      <path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5" />
+    </svg>
+    Open Your Surprise
+    <span class="ping-dot">
+      <span class="ring"></span>
+      <span class="dot"></span>
+    </span>
+  </button>
+
+  <div class="message-card" id="messageCard">
+    <svg class="cake-icon" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#d4a437" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8" />
+      <path d="M4 16s.5-1 2-1 2.5 2 4 2 2.5-2 4-2 2.5 2 4 2 2-1 2-1" />
+      <path d="M2 21h20" />
+      <path d="M7 8v3" /><path d="M12 8v3" /><path d="M17 8v3" />
+      <path d="M7 4h.01" /><path d="M12 4h.01" /><path d="M17 4h.01" />
+    </svg>
+
+    <h1>Happy Birthday<span class="dad">Dad!</span></h1>
+
+    <div class="divider">
+      <span class="line"></span>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="#d4a437">
+        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+      </svg>
+      <span class="line"></span>
+    </div>
+
+    <p class="personal-msg">Happiest of Birthdays woop woop!</p>
+
+    <button class="dismiss-btn" id="dismissBtn" aria-label="Continue to website">Continue</button>
+  </div>
+</div>
+
+<canvas id="confetti"></canvas>
+
+<script>
+(function () {
+  var overlay    = document.getElementById('overlay');
+  var btn        = document.getElementById('celebrateBtn');
+  var card       = document.getElementById('messageCard');
+  var dismissBtn = document.getElementById('dismissBtn');
+  var content    = document.getElementById('websiteContent');
+  var canvas     = document.getElementById('confetti');
+  var ctx        = canvas.getContext('2d');
+
+  var particles  = [];
+  var balloons   = [];
+  var animId     = null;
+  var startTime  = 0;
+
+  function resize() {
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  /* ── Colors ── */
+  var CONFETTI_COLORS = [
+    '#E74C3C','#F39C12','#F1C40F','#E67E22',
+    '#FF6B6B','#FFD93D','#FF8C42','#C0392B',
+    '#D4A437','#FF5252'
+  ];
+  var BALLOON_COLORS = [
+    '#E74C3C','#F39C12','#F1C40F','#FF6B6B',
+    '#FFD93D','#FF8C42'
+  ];
+
+  /* ── Confetti particle ── */
+  function createConfetti() {
+    return {
+      x:    Math.random() * canvas.width,
+      y:    -10 - Math.random() * canvas.height * 0.6,
+      vx:   (Math.random() - 0.5) * 4,
+      vy:   2 + Math.random() * 3,
+      w:    4 + Math.random() * 6,
+      h:    6 + Math.random() * 10,
+      color: CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)],
+      rot:   Math.random() * Math.PI * 2,
+      rotV:  (Math.random() - 0.5) * 0.15,
+      wobble: Math.random() * 10,
+      wobbleSpd: Math.random() * 0.1 + 0.05,
+      life:  1,
+      decay: 0.001 + Math.random() * 0.002
+    };
+  }
+
+  /* ── Balloon object ── */
+  function createBalloon() {
+    var size = 25 + Math.random() * 20;
+    return {
+      x:    Math.random() * canvas.width,
+      y:    canvas.height + 50 + Math.random() * 200,
+      vx:   (Math.random() - 0.5) * 1.5,
+      vy:   -(1.5 + Math.random() * 2),
+      size: size,
+      color: BALLOON_COLORS[Math.floor(Math.random() * BALLOON_COLORS.length)],
+      wobble: Math.random() * Math.PI * 2,
+      wobbleSpd: 0.01 + Math.random() * 0.02,
+      stringLen: 20 + Math.random() * 30,
+      opacity: 0.9
+    };
+  }
+
+  function spawnConfetti(count) {
+    for (var i = 0; i < count; i++) particles.push(createConfetti());
+  }
+
+  function spawnBalloons(count) {
+    for (var i = 0; i < count; i++) balloons.push(createBalloon());
+  }
+
+  /* ── Draw functions ── */
+  function drawConfetti(p) {
+    ctx.save();
+    ctx.translate(p.x, p.y);
+    ctx.rotate(p.rot);
+    ctx.globalAlpha = p.life;
+    ctx.fillStyle = p.color;
+    if (p.w > 7) {
+      ctx.beginPath();
+      ctx.arc(0, 0, p.w / 2, 0, Math.PI * 2);
+      ctx.fill();
+    } else {
+      ctx.fillRect(-p.w / 2, -p.h / 4, p.w, p.h / 2);
+    }
+    ctx.restore();
+  }
+
+  function drawBalloon(b, time) {
+    var wobX = Math.sin(time * b.wobbleSpd + b.wobble) * 15;
+    ctx.save();
+    ctx.translate(b.x + wobX, b.y);
+    ctx.globalAlpha = b.opacity;
+
+    /* Body */
+    ctx.beginPath();
+    ctx.ellipse(0, 0, b.size * 0.7, b.size, 0, 0, Math.PI * 2);
+    ctx.fillStyle = b.color;
+    ctx.fill();
+
+    /* Shine */
+    ctx.beginPath();
+    ctx.ellipse(-b.size * 0.2, -b.size * 0.3, b.size * 0.13, b.size * 0.22, -0.4, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(255,255,255,0.3)';
+    ctx.fill();
+
+    /* Knot */
+    ctx.beginPath();
+    ctx.moveTo(-3, b.size);
+    ctx.lineTo(0, b.size + 6);
+    ctx.lineTo(3, b.size);
+    ctx.fillStyle = b.color;
+    ctx.fill();
+
+    /* String */
+    var sw = Math.sin(time * 0.003 + b.wobble) * 8;
+    ctx.beginPath();
+    ctx.moveTo(0, b.size + 6);
+    ctx.quadraticCurveTo(sw, b.size + 6 + b.stringLen / 2, -sw * 0.5, b.size + 6 + b.stringLen);
+    ctx.strokeStyle = 'rgba(150,120,90,0.45)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    ctx.restore();
+  }
+
+  /* ── Animation loop ── */
+  function animate() {
+    var time = Date.now() - startTime;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    /* Confetti */
+    for (var i = particles.length - 1; i >= 0; i--) {
+      var p = particles[i];
+      p.x += p.vx + Math.sin(p.wobble) * 0.5;
+      p.y += p.vy;
+      p.rot += p.rotV;
+      p.wobble += p.wobbleSpd;
+      p.vy += 0.025;
+      p.life -= p.decay;
+      if (p.life <= 0 || p.y > canvas.height + 30) {
+        particles.splice(i, 1);
+        continue;
+      }
+      drawConfetti(p);
+    }
+
+    /* Balloons */
+    for (var j = balloons.length - 1; j >= 0; j--) {
+      var b = balloons[j];
+      b.x += b.vx;
+      b.y += b.vy;
+      if (b.y < -b.size * 3) {
+        balloons.splice(j, 1);
+        continue;
+      }
+      drawBalloon(b, time);
+    }
+
+    if (particles.length > 0 || balloons.length > 0) {
+      animId = requestAnimationFrame(animate);
+    } else {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      animId = null;
+    }
+  }
+
+  /* ── Click: celebrate ── */
+  btn.addEventListener('click', function () {
+    btn.classList.add('gone');
+    startTime = Date.now();
+
+    spawnConfetti(220);
+    spawnBalloons(16);
+    if (!animId) animId = requestAnimationFrame(animate);
+
+    /* Extra bursts */
+    var extra = 0;
+    var interval = setInterval(function () {
+      spawnConfetti(50);
+      spawnBalloons(3);
+      if (!animId) animId = requestAnimationFrame(animate);
+      extra++;
+      if (extra >= 5) clearInterval(interval);
+    }, 900);
+
+    /* Show card after a beat */
+    setTimeout(function () {
+      card.classList.add('visible');
+    }, 650);
+  });
+
+  /* ── Dismiss: reveal website ── */
+  dismissBtn.addEventListener('click', function () {
+    overlay.classList.add('hidden');
+    document.body.style.overflow = 'auto';
+    content.classList.add('visible');
+  });
+})();
+</script>
+</body>
+</html>
