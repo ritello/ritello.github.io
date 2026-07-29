@@ -1,0 +1,344 @@
+/* ═══════════════════════════════════════════════
+   RITELLO — Design Override v2
+   Palette: Deep Navy · Amber · Clean White
+   Keeps original Montserrat font & layout intact
+   ═══════════════════════════════════════════════ */
+
+:root {
+  --navy:        #1a3560;
+  --navy-dark:   #0f2040;
+  --navy-mid:    #2450a0;
+  --amber:       #f59e0b;
+  --amber-dark:  #d97706;
+  --amber-light: #fef3c7;
+  --bg:          #f7f9fc;
+  --bg-alt:      #eef2f7;
+  --bg-dark:     #1a3560;
+  --text:        #1e293b;
+  --text-muted:  #64748b;
+  --border:      #cbd5e1;
+  --white:       #ffffff;
+}
+
+/* ── Body ── */
+body {
+  background-color: var(--bg) !important;
+  color: var(--text) !important;
+}
+
+/* ── Navigation ── */
+.menu {
+  background-color: var(--white) !important;
+  border-bottom: 2px solid var(--amber) !important;
+  box-shadow: 0 1px 12px rgba(0,0,0,0.08) !important;
+  padding-top: 14px !important;
+  padding-bottom: 14px !important;
+}
+
+.nav-link {
+  color: var(--text) !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.03em !important;
+}
+
+.nav-link:hover { color: var(--navy) !important; }
+
+.phone { color: var(--navy-dark) !important; font-weight: 700 !important; }
+.phone:hover { color: var(--amber-dark) !important; }
+
+/* ── Buttons ── */
+.button,
+.button.w-button,
+a.button {
+  background-color: var(--navy) !important;
+  color: var(--white) !important;
+  border-radius: 6px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.03em !important;
+  border: none !important;
+  transition: background-color 0.2s ease !important;
+}
+
+.button:hover,
+a.button:hover {
+  background-color: var(--navy-mid) !important;
+}
+
+.button.wait {
+  background-color: var(--white) !important;
+  color: var(--navy-dark) !important;
+  border: 2px solid var(--navy) !important;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1) !important;
+}
+
+.button.wait:hover {
+  background-color: var(--navy) !important;
+  color: var(--white) !important;
+}
+
+input[type="submit"].button,
+input.button {
+  background-color: var(--navy) !important;
+  color: var(--white) !important;
+  border-radius: 6px !important;
+}
+
+.button-fac_form {
+  background-color: var(--amber) !important;
+  color: var(--navy-dark) !important;
+  border-radius: 6px !important;
+  font-weight: 700 !important;
+  transition: background-color 0.2s ease !important;
+}
+
+.button-fac_form:hover { background-color: var(--amber-dark) !important; color: var(--white) !important; }
+
+/* ── Hero section ── */
+.section.main {
+  background-color: var(--white) !important;
+}
+
+.heading {
+  font-family: Montserrat, sans-serif !important;
+  color: var(--navy-dark) !important;
+  font-size: 22px !important;
+  font-weight: 400 !important;
+  line-height: 1.5 !important;
+}
+
+.headline {
+  font-family: Montserrat, sans-serif !important;
+  color: var(--text) !important;
+}
+
+.headline .dop { color: var(--amber-dark) !important; }
+
+/* ── Running ticker ── */
+.running-line {
+  background-color: var(--navy-dark) !important;
+  color: #c7d6f0 !important;
+  letter-spacing: 0.05em !important;
+}
+
+.separator { color: var(--amber) !important; }
+
+/* ── Section headings ── */
+.heading-2 {
+  font-family: Montserrat, sans-serif !important;
+  color: var(--navy-dark) !important;
+}
+
+.heading-2.dop_size,
+.heading-2._2 { color: var(--navy-dark) !important; }
+
+.heading-2.section_test { color: var(--navy-dark) !important; }
+
+.subtitle { color: var(--text-muted) !important; }
+
+.heading-3 {
+  font-family: Montserrat, sans-serif !important;
+  color: var(--text) !important;
+}
+
+/* ── Separator tech section ── */
+.section.info_separator {
+  background-color: var(--bg) !important;
+  background-image: none !important;
+}
+
+/* ── Slider section ── */
+.section.slider_bg_ing {
+  background-color: var(--bg-alt) !important;
+}
+
+/* ── Video section ── */
+.section.bg_img.video {
+  background-image:
+    linear-gradient(rgba(15, 32, 64, 0.88), rgba(15, 32, 64, 0.88)),
+    url("../images/62e10c3116206d1e3277889c_ritello-bg-video.webp") !important;
+}
+
+.name-block {
+  color: #c7d6f0 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+}
+
+/* ── Functional section ── */
+.section.home_img { background-color: var(--bg) !important; }
+
+/* ── CTA bg section ── */
+.section.bg_img:not(.video):not(.family) {
+  background-image:
+    linear-gradient(to right, rgba(247, 249, 252, 0.97) 28%, rgba(247, 249, 252, 0.75) 65%),
+    url("../images/62e10c3116206d4b36778890_s2.webp") !important;
+}
+
+.cta { color: var(--text-muted) !important; }
+
+/* ── Specs ── */
+.indicators { color: var(--navy) !important; font-weight: 600 !important; }
+.more { color: var(--navy) !important; font-weight: 500 !important; }
+.plus { color: var(--amber-dark) !important; }
+
+/* ── Modes section ── */
+.switch {
+  background-color: var(--white) !important;
+  color: var(--navy-dark) !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1) !important;
+}
+
+.switch.position {
+  background-color: var(--navy) !important;
+  color: var(--white) !important;
+  border-color: var(--navy) !important;
+}
+
+.bg_pointer { background-color: var(--amber) !important; }
+
+/* ── Structure section ── */
+.section.structure { background-color: var(--bg-alt) !important; }
+
+.number { color: var(--navy-dark) !important; }
+
+.block-guarantees { border-top: 2px solid var(--amber) !important; margin-top: 16px !important; padding-top: 16px !important; }
+
+/* ── Configurations ── */
+.section.complete { background-color: var(--bg) !important; }
+.div-arrow { color: var(--amber-dark) !important; }
+
+/* ── Family section ── */
+.section.bg_img.family {
+  background-image:
+    linear-gradient(rgba(247, 249, 252, 0.8), rgba(247, 249, 252, 0.8)),
+    url("../images/62e10c3116206db82c77889d_ritello-bg-wait.webp") !important;
+}
+
+/* ── Tabs ── */
+.services {
+  color: var(--text-muted) !important;
+  border-bottom: 2px solid transparent !important;
+  font-size: 14px !important;
+  transition: color 0.15s, border-color 0.15s !important;
+}
+
+.services:hover { color: var(--navy) !important; }
+
+.services.w--current {
+  color: var(--navy) !important;
+  border-bottom-color: var(--navy) !important;
+}
+
+.icon-arrow { color: var(--amber-dark) !important; }
+
+.link_site {
+  color: var(--navy) !important;
+  font-weight: 600 !important;
+  text-decoration: none !important;
+}
+
+.link_site:hover { color: var(--amber-dark) !important; }
+
+/* ── FAQ ── */
+.more { color: var(--text) !important; font-weight: 400 !important; }
+
+.answer {
+  background-color: var(--bg) !important;
+  border-left: 3px solid var(--amber) !important;
+  padding-left: 16px !important;
+}
+
+.div-answer { color: var(--text-muted) !important; }
+
+.line { background-color: var(--navy) !important; }
+.line-rotate { background-color: var(--navy) !important; }
+
+/* ── Forms ── */
+.text-field-form,
+.text-field-form_gorizontal,
+.pole-form_lbock {
+  border: 1.5px solid var(--border) !important;
+  border-radius: 6px !important;
+  background-color: var(--white) !important;
+  color: var(--text) !important;
+  transition: border-color 0.2s ease !important;
+}
+
+.text-field-form:focus,
+.text-field-form_gorizontal:focus,
+.pole-form_lbock:focus {
+  border-color: var(--navy) !important;
+  outline: none !important;
+  box-shadow: 0 0 0 3px rgba(26, 53, 96, 0.1) !important;
+}
+
+.link_technical { color: var(--navy) !important; }
+.w-form-label { color: var(--text-muted) !important; }
+.cta.form { color: var(--text-muted) !important; }
+
+/* ── About company ── */
+.div-block-librex {
+  background-color: var(--amber-light) !important;
+  border-radius: 8px !important;
+  padding: 20px 24px !important;
+  border-left: 4px solid var(--amber-dark) !important;
+}
+
+/* ── Contacts ── */
+.section.address { background-color: var(--bg) !important; }
+
+.phone_contact { color: var(--navy-dark) !important; font-weight: 700 !important; text-decoration: none !important; }
+.phone_contact:hover { color: var(--amber-dark) !important; }
+
+.mail { color: var(--navy) !important; text-decoration: none !important; font-weight: 500 !important; }
+.mail:hover { color: var(--amber-dark) !important; }
+
+.company-address {
+  color: var(--text-muted) !important;
+  border-left: 3px solid var(--navy) !important;
+  padding-left: 16px !important;
+}
+
+/* ── Modals ── */
+.lbock-windows {
+  background-color: var(--white) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 16px 50px rgba(0,0,0,0.18) !important;
+}
+
+.cta_form { color: var(--text) !important; }
+.cta_form strong { color: var(--navy-dark) !important; }
+
+/* ── Footer ── */
+.section.gray { background-color: var(--navy-dark) !important; }
+.block-link_footer { color: #c7d6f0 !important; font-weight: 600 !important; }
+.link_footer { color: #94a3b8 !important; text-decoration: none !important; }
+.link_footer:hover { color: var(--amber) !important; }
+.footer { border-top: 1px solid rgba(255,255,255,0.1) !important; }
+.phone_footer { color: #c7d6f0 !important; }
+.phone_footer:hover { color: var(--amber) !important; }
+
+/* ── Slider dots ── */
+.w-slider-dot.w-active { background-color: var(--navy) !important; }
+.w-slider-dot { background-color: var(--border) !important; }
+
+/* ── Advantages / merits ── */
+.div-merits {
+  background-color: var(--white) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 10px !important;
+  padding: 18px !important;
+  transition: box-shadow 0.2s ease !important;
+}
+
+.div-merits:hover { box-shadow: 0 4px 16px rgba(26,53,96,0.12) !important; }
+.slogan { color: var(--text-muted) !important; }
+
+/* ── Paragraph ── */
+.paragraph { color: var(--text-muted) !important; }
+
+/* ── Description text ── */
+.description { color: var(--text-muted) !important; }
